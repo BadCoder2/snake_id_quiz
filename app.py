@@ -47,38 +47,62 @@ class middleTextFrame(customtkinter.CTkFrame):
     def change_text(self, text):
         self.text.configure(text=text)
 
+class bottomMidFrame(customtkinter.CTkFrame):
+    def __init__(self, master, button_callbackL, button_callbackR):
+        super().__init__(master)
+        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        self.buttonL = customtkinter.CTkButton(self, text="Guess Species/Subspecies", command=button_callbackL)
+        self.buttonL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
+
+        self.middle_frame = middleTextFrame(self)
+        self.middle_frame.grid(row=0, column=1, padx=10, pady=10, sticky="esw", columnspan=2)
+
+        self.buttonR = customtkinter.CTkButton(self, text="Next Image", command=button_callbackR)
+        self.buttonR.grid(row=0, column=3, padx=10, pady=10, sticky="nesw")
+
+class bottomFrame(customtkinter.CTkFrame):
+    def __init__(self, master, button_callbackBL, button_callbackBM, button_callbackBR):
+        super().__init__(master)
+        self.grid_columnconfigure((0, 1, 2), weight=1)
+
+        self.buttonBL = customtkinter.CTkButton(self, text="Get a Hint: Genus", command=button_callbackBL)
+        self.buttonBL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
+
+        self.buttonBM = customtkinter.CTkButton(self, text="Get a Hint: Species or Subspecies", command=button_callbackBM)
+        self.buttonBM.grid(row=0, column=1, padx=10, pady=10, sticky="nesw")
+
+        self.buttonBR = customtkinter.CTkButton(self, text="Get the Answer", command=button_callbackBR)
+        self.buttonBR.grid(row=0, column=2, padx=10, pady=10, sticky="nesw")
+
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.getSnakeList()
         self.getvalues()
+        self.buttonsDisabled = True
+        self.usedHint = False
 
         self.title("Snake ID Quiz")
         self.geometry("1600x1000")
-        self.grid_columnconfigure(0, weight=3)
-        self.grid_columnconfigure(3, weight=1)
-        self.grid_columnconfigure((1, 2), weight=2)
+        self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         self.left_frame = leftFrame(self, values=self.inclCommonNames())
         self.left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
 
-        self.buttonL = customtkinter.CTkButton(self, text="Guess Species/Ssp.", command=self.button_callbackL)
-        self.buttonL.grid(row=1, column=0, padx=10, pady=10, sticky="nesw")
-
-        self.middle_frame = middleTextFrame(self)
-        self.middle_frame.grid(row=1, column=1, padx=10, pady=10, sticky="esw", columnspan=2)
-
-        self.buttonR = customtkinter.CTkButton(self, text="Next Image", command=self.button_callbackR)
-        self.buttonR.grid(row=1, column=3, padx=10, pady=10, sticky="nesw")
-
         self.center_image_frame = centerImageFrame(self)
         self.center_image_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew", columnspan=3)
+
+        self.bottom_middle_frame = bottomMidFrame(self, button_callbackL=self.button_callbackL, button_callbackR=self.button_callbackR)
+        self.bottom_middle_frame.grid(row=1, column=0, padx=10, pady=0, sticky="nesw", columnspan=4)
+
+        self.bottom_frame = bottomFrame(self, button_callbackBL=self.button_callbackBL, button_callbackBM=self.button_callbackBM, button_callbackBR=self.button_callbackBR)
+        self.bottom_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nesw", columnspan=4)
 
         self.correct_species = None
     def button_callbackL(self):
         # Get the species the user guessed
-        if self.LbuttonDisabled:
+        if self.buttonsDisabled:
             return
         guessed_species_with_common_name = self.left_frame.get()
         self.number_of_guesses += 1
@@ -87,19 +111,56 @@ class App(customtkinter.CTk):
         print("User guessed: " + guessed_species)
         if guessed_species == self.correct_species:
             if self.number_of_guesses == 1:
-                self.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try!")
+                self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try!")
             else:
-                self.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries.")
-            self.LbuttonDisabled = True
+                self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries.")
+            self.buttonsDisabled = True
         else:
             if self.number_of_guesses == 1:
-                self.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " time.")
+                self.bottom_middle_frame.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " time.")
             else:
-                self.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " times.")
+                self.bottom_middle_frame.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " times.")
+
+    def button_callbackBL(self):
+        if self.buttonsDisabled:
+            return
+        elif self.correct_species == None:
+            self.bottom_middle_frame.middle_frame.change_text("Advance to the next image to begin.")
+            return
+        else:
+            genus = self.correct_species.split()[0]
+            self.bottom_middle_frame.middle_frame.change_text("The genus is " + genus + ".")
+            self.usedHint = True
+
+    def button_callbackBM(self):
+        if self.buttonsDisabled:
+            return
+        elif self.correct_species == None:
+            self.bottom_middle_frame.middle_frame.change_text("Advance to the next image to begin.")
+            return
+        else:
+            if len(self.correct_species.split()) == 2:
+                self.bottom_middle_frame.middle_frame.change_text("The current image is identifiable to species level.")
+            elif len(self.correct_species.split()) == 3:
+                self.bottom_middle_frame.middle_frame.change_text("The current image is identifiable to subspecies level.")
+            else:
+                self.bottom_middle_frame.middle_frame.change_text("ERROR")
+            self.usedHint = True
+
+    def button_callbackBR(self):
+        if self.buttonsDisabled:
+            return
+        self.buttonsDisabled = True
+        if self.correct_species == None:
+            self.bottom_middle_frame.middle_frame.change_text("Advance to the next image to begin.")
+            return
+        self.bottom_middle_frame.middle_frame.change_text("The species/subspecies is " + str(self.correct_species) + ".")
+
     def button_callbackR(self):
         print("Next Image")
         self.number_of_guesses = 0
-        self.LbuttonDisabled = False
+        self.buttonsDisabled = False
+        self.usedHint = False
         # Order of events: pick random species, pick random image of that species, download it, display it
         self.correct_species = random.choice(self.species_list)
         image_url_list = self.genListOfImagesURLsFromSpecies(self.correct_species)
@@ -108,7 +169,7 @@ class App(customtkinter.CTk):
         with open(image_path, "wb") as f:
             f.write(requests.get(image_url).content)
         self.center_image_frame.change_image(image_path)
-        self.middle_frame.change_text("What species (or subspecies, if identifiable) is this snake?")
+        self.bottom_middle_frame.middle_frame.change_text("What species (or subspecies, if identifiable) is this snake?")
         
     def genListOfImagesURLsFromSpecies(self, species):
         # Function to get image urls from species
