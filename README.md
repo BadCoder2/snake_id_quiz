@@ -38,7 +38,7 @@ To delete a location, simply delete `location_[word-used-in-location.txt].json` 
 2. Run `venv\Scripts\Activate`
 3. Run `python app.py`
 
-## Setup from EXE (Not Recommended, but if you aren't experiencing with command prompt, it might be a good choice)
+## Setup from EXE (Not recommended, but if you aren't experienced with command prompt, it might be a good choice)
 
 1. Download the zipped exe from the most recent release
 2. Follow steps 5 and 6 of setting up from source (instead of "the same directory as app.py", put it in the same directory as app.exe).
