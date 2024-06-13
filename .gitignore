@@ -1,0 +1,6 @@
+/.conda
+/cur_image
+/image_urls
+/locations
+/location_species.csv
+/requests_testing.py
