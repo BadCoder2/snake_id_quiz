@@ -276,7 +276,7 @@ class App(customtkinter.CTk):
         # Check if GBIF dataset files exist, if not, tell user to download them
         if not os.path.isfile("location_species.csv"):
             print("location_species.csv does not exist. Please download it from GBIF. See the README for more information.")
-            exit()
+            raise FileNotFoundError
 
 app = App()
 app.mainloop()
