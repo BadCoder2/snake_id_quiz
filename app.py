@@ -111,9 +111,15 @@ class App(customtkinter.CTk):
         print("User guessed: " + guessed_species)
         if guessed_species == self.correct_species:
             if self.number_of_guesses == 1:
-                self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try!")
+                if self.usedHint:
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try, but used a hint.")
+                else:
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try without hints!")
             else:
-                self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries.")
+                if self.usedHint:
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries, but used a hint.")
+                else:
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries, and used no hints.")
             self.buttonsDisabled = True
         else:
             if self.number_of_guesses == 1:
