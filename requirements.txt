@@ -1,7 +1,6 @@
 ctkdlib==5.0
 customtkinter==5.2.2
-EcoNameTranslator==2.1
-EcoNameTranslator==2.1
 pandas==2.2.2
 Pillow==10.3.0
+pytaxize==0.7.0
 Requests==2.32.3
