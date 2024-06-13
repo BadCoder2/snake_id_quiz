@@ -78,16 +78,28 @@ class App(customtkinter.CTk):
         self.correct_species = None
     def button_callbackL(self):
         # Get the species the user guessed
+        if self.LbuttonDisabled:
+            return
         guessed_species_with_common_name = self.left_frame.get()
+        self.number_of_guesses += 1
         # Remove everything within parentheses
         guessed_species = re.sub(r"\(.*\)", "", guessed_species_with_common_name).strip()
         print("User guessed: " + guessed_species)
         if guessed_species == self.correct_species:
-            self.middle_frame.change_text("Correct! The species is " + self.correct_species + ".")
+            if self.number_of_guesses == 1:
+                self.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try!")
+            else:
+                self.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries.")
+            self.LbuttonDisabled = True
         else:
-            self.middle_frame.change_text("Incorrect. The species is not " + guessed_species + ".")
+            if self.number_of_guesses == 1:
+                self.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " time.")
+            else:
+                self.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " times.")
     def button_callbackR(self):
         print("Next Image")
+        self.number_of_guesses = 0
+        self.LbuttonDisabled = False
         # Order of events: pick random species, pick random image of that species, download it, display it
         self.correct_species = random.choice(self.species_list)
         image_url_list = self.genListOfImagesURLsFromSpecies(self.correct_species)
@@ -96,7 +108,7 @@ class App(customtkinter.CTk):
         with open(image_path, "wb") as f:
             f.write(requests.get(image_url).content)
         self.center_image_frame.change_image(image_path)
-        self.middle_frame.change_text("What species is this?")
+        self.middle_frame.change_text("What species (or subspecies, if identifiable) is this snake?")
         
     def genListOfImagesURLsFromSpecies(self, species):
         # Function to get image urls from species
