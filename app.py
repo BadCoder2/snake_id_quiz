@@ -203,7 +203,6 @@ class App(customtkinter.CTk):
             location = f.read().strip()
         if not os.path.isfile("locations/location_common_name_dict_" + location + ".json"):
             commonNamePlusSciNameList = []
-            changed = 0
             for scientific_name in self.species_list:
                 common_name_str = ""
                 # Sometimes the common name lookup errors becaues the species is not in the database
@@ -213,10 +212,9 @@ class App(customtkinter.CTk):
                 except:
                     # If this haoppens, we have to remove the species from the list
                     print("Error getting common name for " + scientific_name)
-                    self.species_list.remove(scientific_name)
-                    changed = 1
-                    continue
+                    common_name_list = [None]
                 if common_name_list == [None]:
+                    commonNamePlusSciNameList.append(scientific_name)
                     continue
                 for common_name in common_name_list:
                     common_name_str += common_name + ", "
@@ -224,10 +222,6 @@ class App(customtkinter.CTk):
                 commonNamePlusSciNameList.append(scientific_name + " (" + common_name_str + ")" )
             with open("locations/location_common_name_dict_" + location + ".json", "w") as f:
                 json.dump(commonNamePlusSciNameList, f)
-            if changed == 1:
-                os.remove("locations/location_" + location + ".json")
-                with open("locations/location_" + location + ".json", "w") as f:
-                    json.dump(self.species_list, f)
         else:
             with open("locations/location_common_name_dict_" + location + ".json", "r") as f:
                 commonNamePlusSciNameList = json.load(f)
