@@ -100,7 +100,7 @@ class App(customtkinter.CTk):
         
     def genListOfImagesURLsFromSpecies(self, species):
         # Function to get image urls from species
-        print("Attempting to get image for species: " + species)
+        #print("Attempting to get image for species: " + species)
         if not os.path.isfile("image_urls/" + species + ".json"):
             url = "https://api.gbif.org/v1/occurrence/search?basisOfRecord=HUMAN_OBSERVATION&limit=300&scientificName=" + species
             response = requests.get(url)
@@ -126,7 +126,15 @@ class App(customtkinter.CTk):
             commonNamePlusSciName = []
             for scientific_name in self.species_list:
                 common_name_str = ""
-                common_name_list = pytaxize.itis.terms(scientific_name)[0]["commonNames"]
+                # Sometimes the common name lookup errors becaues the species is not in the database
+                try:
+                    common_name_list = pytaxize.itis.terms(scientific_name)[0]["commonNames"]
+                    print("Got common name for " + scientific_name)
+                except:
+                    # If this haoppens, we have to remove the species from the list
+                    print("Error getting common name for " + scientific_name)
+                    self.species_list.remove(scientific_name)
+                    continue
                 if common_name_list == [None]:
                     continue
                 for common_name in common_name_list:
