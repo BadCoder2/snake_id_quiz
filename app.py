@@ -183,9 +183,16 @@ class App(customtkinter.CTk):
         self.buttonsDisabled = False
         self.usedHint = False
         # Order of events: pick random species, pick random image of that species, download it, display it
-        self.correct_species = random.choice(self.species_list)
-        image_url_list = self.genListOfImagesURLsFromSpecies(self.correct_species)
-        image_url = random.choice(image_url_list)
+        while True:
+            self.correct_species = random.choice(self.species_list)
+            image_url_list = self.genListOfImagesURLsFromSpecies(self.correct_species)
+            try:
+                image_info = random.choice(image_url_list)
+                break
+            except:
+                print("Error: No images found for " + self.correct_species + ". Trying different species.")
+                continue
+        image_url = image_info["image_url"]
         image_path = "cur_image"
         with open(image_path, "wb") as f:
             f.write(requests.get(image_url).content)
@@ -194,6 +201,7 @@ class App(customtkinter.CTk):
             newtext = "What species is this snake?"
         elif self.mode == "subspecies":
             newtext = "What species (or subspecies, if identifiable) is this snake?"
+        newtext += " Image by " + image_info["creator"] + ", licensed under " + image_info["license"] + ". Reference: " + image_info["reference"]
         self.bottom_middle_frame.middle_frame.change_text(newtext)
         
     def genListOfImagesURLsFromSpecies(self, species):
@@ -207,12 +215,13 @@ class App(customtkinter.CTk):
             for result in results:
                 try:
                     for media_entry in result["media"]:
-                        image_url = {}
-                        image_url["image_url"] = media_entry["identifier"]
-                        image_url["license"] = media_entry["license"]
-                        image_url["creator"] = media_entry["rightsHolder"]
-                        image_url["reference"] - media_entry["references"]
-                        image_urls.append(image_url)
+                        image_info = {
+                            "image_url": media_entry["identifier"],
+                            "license": media_entry["license"],
+                            "creator": media_entry["rightsHolder"],
+                            "reference": media_entry["references"]
+                        }
+                        image_urls.append(image_info)
                 except:
                     continue
             with open("image_urls/" + species + ".json", "w") as f:
