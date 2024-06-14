@@ -80,11 +80,10 @@ class App(customtkinter.CTk):
         # Grab the second line of mode.txt to determine the mode
         with open("mode.txt", "r") as f:
             self.mode = f.readlines()[1].strip()
-        if self.mode != "species" and self.mode != "subspecies":
-            print("Error: mode.txt is not set to 'species' or 'subspecies'.")
-            raise ValueError
         self.getSnakeList()
         self.getValues()
+        self.commonNamePlusSciNameList = self.inclCommonNames()
+        self.alignSpeciesListAndCommonNameListWithMode()
         self.buttonsDisabled = True
         self.usedHint = False
 
@@ -93,7 +92,7 @@ class App(customtkinter.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.left_frame = leftFrame(self, values=self.inclCommonNames())
+        self.left_frame = leftFrame(self, values=self.commonNamePlusSciNameList)
         self.left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
 
         self.center_image_frame = centerImageFrame(self)
@@ -269,6 +268,18 @@ class App(customtkinter.CTk):
             # If the json file already exists, just load it :)
             with open("locations/location_" + location + ".json", "r") as f:
                 self.species_list = json.load(f)
+
+    def alignSpeciesListAndCommonNameListWithMode(self):
+        # If the mode is "species", remove the subspecies from the species list and common name list
+        if self.mode == "species":
+            self.species_list = [species for species in self.species_list if len(species.split()) == 2]
+            self.commonNamePlusSciNameList = [species for species in self.commonNamePlusSciNameList if len(re.sub(r"\(.*\)", "", species).split()) == 2]
+            return
+        elif self.mode == "subspecies":
+            return
+        else:
+            print("Error: mode.txt is not set to 'species' or 'subspecies'.")
+            raise ValueError
 
     def getSnakeList(self):
         # Function to get list of all snake species and load it into a list
