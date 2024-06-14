@@ -6,10 +6,11 @@ Written in python using customtkinter. Tested only on Windows 10, will maybe wor
 
 ## Setup from Source
 
+These instructions assume you have Python 3 installed - download it [here](https://www.python.org/downloads/) if you don't
 1. Download the repository, unzip into a folder.
 2. Create an empty folder named "image_urls" and an empty folder named "locations" in the main folder (the directory containing app.py).
 3. Create a venv and enter it:
-   1. Open command prompt, [cd into main folder](https://www.wikihow.com/Change-Directories-in-Command-Prompt)
+   1. Open command prompt, [cd into main folder](https://www.wikihow.com/Change-Directories-in-Command-Prompt) (see link for guide on how to do so)
    2. Run `python -m venv venv`
    3. Run `venv\Scripts\Activate`
 4. Run `pip install -r requirements.txt`
