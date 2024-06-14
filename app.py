@@ -124,23 +124,27 @@ class App(customtkinter.CTk):
         # Remove everything within parentheses
         guessed_species = re.sub(r"\(.*\)", "", guessed_species_with_common_name).strip()
         print("User guessed: " + guessed_species)
+        if self.mode == "species":
+            modeText = "species"
+        elif self.mode == "subspecies":
+            modeText = "species/subspecies"
         if guessed_species == self.correct_species:
             if self.number_of_guesses == 1:
                 if self.usedHint:
-                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try, but used a hint.")
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The " + modeText + " is " + self.correct_species + ". You guessed it on the first try, but used a hint.")
                 else:
-                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it on the first try without hints!")
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The " + modeText + " is " + self.correct_species + ". You guessed it on the first try without hints!")
             else:
                 if self.usedHint:
-                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries, but used a hint.")
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The " + modeText + " is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries, but used a hint.")
                 else:
-                    self.bottom_middle_frame.middle_frame.change_text("Correct! The species/subspecies is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries, and used no hints.")
+                    self.bottom_middle_frame.middle_frame.change_text("Correct! The " + modeText + " is " + self.correct_species + ". You guessed it in " + str(self.number_of_guesses) + " tries, and used no hints.")
             self.buttonsDisabled = True
         else:
             if self.number_of_guesses == 1:
-                self.bottom_middle_frame.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " time.")
+                self.bottom_middle_frame.middle_frame.change_text("Incorrect. The " + modeText + " is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " time.")
             else:
-                self.bottom_middle_frame.middle_frame.change_text("Incorrect. The species/subspecies is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " times.")
+                self.bottom_middle_frame.middle_frame.change_text("Incorrect. The " + modeText + " is not " + guessed_species + ". You have guessed " + str(self.number_of_guesses) + " times.")
 
     def button_callbackBL(self):
         if self.buttonsDisabled:
@@ -175,7 +179,11 @@ class App(customtkinter.CTk):
         if self.correct_species == None:
             self.bottom_middle_frame.middle_frame.change_text("Advance to the next image to begin.")
             return
-        self.bottom_middle_frame.middle_frame.change_text("The species/subspecies is " + str(self.correct_species) + ".")
+        if self.mode == "species":
+            modeText = "species"
+        elif self.mode == "subspecies":
+            modeText = "species/subspecies"
+        self.bottom_middle_frame.middle_frame.change_text("The " + modeText + " is " + str(self.correct_species) + ".")
 
     def button_callbackR(self):
         print("Next Image")
