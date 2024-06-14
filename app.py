@@ -77,8 +77,14 @@ class bottomFrame(customtkinter.CTkFrame):
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        # Grab the second line of mode.txt to determine the mode
+        with open("mode.txt", "r") as f:
+            self.mode = f.readlines()[1].strip()
+        if self.mode != "species" and self.mode != "subspecies":
+            print("Error: mode.txt is not set to 'species' or 'subspecies'.")
+            raise ValueError
         self.getSnakeList()
-        self.getvalues()
+        self.getValues()
         self.buttonsDisabled = True
         self.usedHint = False
 
@@ -228,7 +234,7 @@ class App(customtkinter.CTk):
         commonNamePlusSciNameList.sort()
         return commonNamePlusSciNameList
 
-    def getvalues(self):
+    def getValues(self):
         with open("location.txt", "r") as f:
             location = f.read().strip()
         if not os.path.isfile("locations/location_" + location + ".json"):
