@@ -1,6 +1,6 @@
 # Snake ID Quiz App
 
-Written in python using customtkinter. Tested only on Windows 10, will maybe work on others.
+Written in python using customtkinter. Tested only on Windows 10, will likely work on others.
 
 **WARNING: Due to the nature of the dataset images are scraped from, injured or dead snakes may be shown.**
 
