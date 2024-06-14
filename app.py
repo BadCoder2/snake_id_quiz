@@ -61,18 +61,27 @@ class bottomMidFrame(customtkinter.CTkFrame):
         self.buttonR.grid(row=0, column=3, padx=10, pady=10, sticky="nesw")
 
 class bottomFrame(customtkinter.CTkFrame):
-    def __init__(self, master, button_callbackBL, button_callbackBM, button_callbackBR):
+    def __init__(self, master, button_callbackBL, button_callbackBM, button_callbackBR, mode):
         super().__init__(master)
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        if mode == "species":
+            self.grid_columnconfigure((0, 1), weight=1)
 
-        self.buttonBL = customtkinter.CTkButton(self, text="Get a Hint: Genus", command=button_callbackBL)
-        self.buttonBL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
+            self.buttonBL = customtkinter.CTkButton(self, text="Get a Hint: Genus", command=button_callbackBL)
+            self.buttonBL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
 
-        self.buttonBM = customtkinter.CTkButton(self, text="Get a Hint: Species or Subspecies", command=button_callbackBM)
-        self.buttonBM.grid(row=0, column=1, padx=10, pady=10, sticky="nesw")
+            self.buttonBR = customtkinter.CTkButton(self, text="Get the Answer", command=button_callbackBR)
+            self.buttonBR.grid(row=0, column=1, padx=10, pady=10, sticky="nesw")
+        elif mode == "subspecies":
+            self.grid_columnconfigure((0, 1, 2), weight=1)
 
-        self.buttonBR = customtkinter.CTkButton(self, text="Get the Answer", command=button_callbackBR)
-        self.buttonBR.grid(row=0, column=2, padx=10, pady=10, sticky="nesw")
+            self.buttonBL = customtkinter.CTkButton(self, text="Get a Hint: Genus", command=button_callbackBL)
+            self.buttonBL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
+
+            self.buttonBM = customtkinter.CTkButton(self, text="Get a Hint: Species or Subspecies", command=button_callbackBM)
+            self.buttonBM.grid(row=0, column=1, padx=10, pady=10, sticky="nesw")
+
+            self.buttonBR = customtkinter.CTkButton(self, text="Get the Answer", command=button_callbackBR)
+            self.buttonBR.grid(row=0, column=2, padx=10, pady=10, sticky="nesw")
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -101,7 +110,7 @@ class App(customtkinter.CTk):
         self.bottom_middle_frame = bottomMidFrame(self, button_callbackL=self.button_callbackL, button_callbackR=self.button_callbackR)
         self.bottom_middle_frame.grid(row=1, column=0, padx=10, pady=0, sticky="nesw", columnspan=4)
 
-        self.bottom_frame = bottomFrame(self, button_callbackBL=self.button_callbackBL, button_callbackBM=self.button_callbackBM, button_callbackBR=self.button_callbackBR)
+        self.bottom_frame = bottomFrame(self, button_callbackBL=self.button_callbackBL, button_callbackBM=self.button_callbackBM, button_callbackBR=self.button_callbackBR, mode=self.mode)
         self.bottom_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nesw", columnspan=4)
 
         self.correct_species = None
@@ -180,7 +189,11 @@ class App(customtkinter.CTk):
         with open(image_path, "wb") as f:
             f.write(requests.get(image_url).content)
         self.center_image_frame.change_image(image_path)
-        self.bottom_middle_frame.middle_frame.change_text("What species (or subspecies, if identifiable) is this snake?")
+        if self.mode == "species":
+            newtext = "What species is this snake?"
+        elif self.mode == "subspecies":
+            newtext = "What species (or subspecies, if identifiable) is this snake?"
+        self.bottom_middle_frame.middle_frame.change_text(newtext)
         
     def genListOfImagesURLsFromSpecies(self, species):
         # Function to get image urls from species
