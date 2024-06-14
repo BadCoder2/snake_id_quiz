@@ -42,7 +42,7 @@ class middleTextFrame(customtkinter.CTkFrame):
         super().__init__(master)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        self.text = customtkinter.CTkLabel(self, text="Hold shift and scroll to move species left and right.")
+        self.text = customtkinter.CTkLabel(self, text="Hold shift and scroll to move species left and right. This snake image by Sebastian Spindler, CC0, no rights reserved. Used without permission.")
         self.text.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
     def change_text(self, text):
         self.text.configure(text=text)
