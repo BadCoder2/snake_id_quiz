@@ -50,12 +50,13 @@ class middleTextFrame(customtkinter.CTkFrame):
 class bottomMidFrame(customtkinter.CTkFrame):
     def __init__(self, master, button_callbackL, button_callbackR):
         super().__init__(master)
-        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        self.grid_columnconfigure((1, 2), weight=1)
+        self.grid_columnconfigure((0, 3), weight=2)
         self.buttonL = customtkinter.CTkButton(self, text="Guess Species/Subspecies", command=button_callbackL)
         self.buttonL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
 
         self.middle_frame = middleTextFrame(self)
-        self.middle_frame.grid(row=0, column=1, padx=10, pady=10, sticky="esw", columnspan=2)
+        self.middle_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nesw", columnspan=2)
 
         self.buttonR = customtkinter.CTkButton(self, text="Next Image", command=button_callbackR)
         self.buttonR.grid(row=0, column=3, padx=10, pady=10, sticky="nesw")
@@ -206,7 +207,12 @@ class App(customtkinter.CTk):
             for result in results:
                 try:
                     for media_entry in result["media"]:
-                        image_urls.append(media_entry["identifier"])
+                        image_url = {}
+                        image_url["image_url"] = media_entry["identifier"]
+                        image_url["license"] = media_entry["license"]
+                        image_url["creator"] = media_entry["rightsHolder"]
+                        image_url["reference"] - media_entry["references"]
+                        image_urls.append(image_url)
                 except:
                     continue
             with open("image_urls/" + species + ".json", "w") as f:
