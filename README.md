@@ -8,13 +8,13 @@ Written in python using customtkinter. Tested only on Windows 10, will likely wo
 
 These instructions assume you have Python 3 installed - download it [here](https://www.python.org/downloads/) if you don't
 1. Download the repository, unzip into a folder.
-2. Create an empty folder named "image_urls" and an empty folder named "locations" in the main folder (the directory containing app.py).
+2. Create an empty folder named "image_urls" and an empty folder named "locations" in the main folder (the directory containing app.py). Do not rename these folders.
 3. Create a venv and enter it:
    1. Open command prompt, [cd into main folder](https://www.wikihow.com/Change-Directories-in-Command-Prompt) (see link for guide on how to do so)
    2. Run `python -m venv venv`
    3. Run `venv\Scripts\Activate`
 4. Run `pip install -r requirements.txt`
-5. Change the contents of location.txt to a custom name that represents the area you want snakes to be picked from (1 word only.)
+5. Change the contents of location.txt to a custom name that represents the area you want snakes to be picked from (1 word only.) (For clarity purposes: I am referring to the *contents* of location.txt, e.g., what the file says when you double click it, not the name of the file.)
 6. Get the species list for that area:
    1. Go to [this link](https://www.gbif.org/occurrence/download?dataset_key=50c9509d-22c7-4a22-a47d-8c48425ef4a7&taxon_key=11592253&occurrence_status=present&gadm_gid=USA.43_1) and sign in if needed.
    2. Change the area to your desired area.
