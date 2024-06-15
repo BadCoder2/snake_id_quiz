@@ -87,11 +87,8 @@ class bottomFrame(customtkinter.CTkFrame):
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-        # Grab the second line of mode.txt to determine the mode
-        with open("mode.txt", "r") as f:
-            self.mode = f.readlines()[1].strip()
-        self.getSnakeList()
-        self.getValues()
+        self.getSnakeListAndMode()
+        self.getValues() 
         self.commonNamePlusSciNameList = self.inclCommonNames()
         self.alignSpeciesListAndCommonNameListWithMode()
         self.buttonsDisabled = True
@@ -317,9 +314,12 @@ class App(customtkinter.CTk):
             print("Error: mode.txt is not set to 'species' or 'subspecies'.")
             raise ValueError
 
-    def getSnakeList(self):
+    def getSnakeListAndMode(self):
         # Function to get list of all snake species and load it into a list
         # This may not be needed - when we're done implementing GBIF, reevaluate
+        # Grab the second line of mode.txt to determine the mode
+        with open("mode.txt", "r") as f:
+            self.mode = f.readlines()[1].strip()
         with open("snake_list.txt", "r") as f:
             self.snakes = f.readlines()
             for i in range(len(self.snakes)):
