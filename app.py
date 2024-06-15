@@ -1,5 +1,4 @@
 import customtkinter
-from ctkdlib import *
 from PIL import Image
 import random
 import os
@@ -8,6 +7,7 @@ import json
 import requests
 import re
 import pytaxize
+from CTkXYFrame import CTkXYFrame
 customtkinter.set_default_color_theme("dark-blue")
 
 
