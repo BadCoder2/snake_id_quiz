@@ -4,6 +4,8 @@ Written in python using customtkinter. Tested only on Windows 10, will likely wo
 
 **WARNING: Due to the nature of the dataset images are scraped from, injured or dead snakes may be shown.**
 
+It is highly reccomended that you read the entirety of this README, as this is a very fragile program currently.
+
 ## Setup from Source
 
 These instructions assume you have Python 3 installed - download it [here](https://www.python.org/downloads/) if you don't
@@ -17,7 +19,7 @@ These instructions assume you have Python 3 installed - download it [here](https
 5. Change the contents of location.txt to a custom name that represents the area you want snakes to be picked from (1 word only.) (For clarity purposes: I am referring to the *contents* of location.txt, e.g., what the file says when you double click it, not the name of the file.)
 6. Get the species list for that area:
    1. Go to [this link](https://www.gbif.org/occurrence/download?dataset_key=50c9509d-22c7-4a22-a47d-8c48425ef4a7&taxon_key=11592253&occurrence_status=present&gadm_gid=USA.43_1) and sign in if needed.
-   2. Change the area to your desired area.
+   2. Change the area to your desired area. (Do not change any other option - just uncheck Tennessee and click "Administrative areas", then search for the area that describes what you're looking for.)
    3. Download the species list into the same directory as app.py.
    4. Extract the csv file; delete the zip file that contained the csv file
    5. Rename the csv file to "location_species.csv"
