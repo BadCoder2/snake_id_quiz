@@ -43,7 +43,7 @@ class middleTextFrame(customtkinter.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
         self.text = customtkinter.CTkLabel(self, text="Hold shift and scroll to move species left and right. This snake image by Sebastian Spindler, CC0, no rights reserved (not endorsed in any way by Sebastian Spindler).")
-        self.text.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        self.text.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
     def change_text(self, text):
         self.text.configure(text=text)
 
@@ -52,6 +52,7 @@ class bottomMidFrame(customtkinter.CTkFrame):
         super().__init__(master)
         self.grid_columnconfigure((1, 2), weight=1)
         self.grid_columnconfigure((0, 3), weight=2)
+        self.grid_rowconfigure(0, weight=1)
         self.buttonL = customtkinter.CTkButton(self, text="Guess Species/Subspecies", command=button_callbackL)
         self.buttonL.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
 
@@ -64,6 +65,7 @@ class bottomMidFrame(customtkinter.CTkFrame):
 class bottomFrame(customtkinter.CTkFrame):
     def __init__(self, master, button_callbackBL, button_callbackBM, button_callbackBR, mode):
         super().__init__(master)
+        self.grid_rowconfigure(0, weight=1)
         if mode == "species":
             self.grid_columnconfigure((0, 1), weight=1)
 
@@ -97,7 +99,8 @@ class App(customtkinter.CTk):
         self.title("Snake ID Quiz")
         self.geometry("1600x1000")
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=3)
+        self.grid_rowconfigure((1,2), weight=1)
 
         self.left_frame = leftFrame(self, values=self.commonNamePlusSciNameList)
         self.left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nesw")
@@ -109,7 +112,7 @@ class App(customtkinter.CTk):
         self.bottom_middle_frame.grid(row=1, column=0, padx=10, pady=0, sticky="nesw", columnspan=4)
 
         self.bottom_frame = bottomFrame(self, button_callbackBL=self.button_callbackBL, button_callbackBM=self.button_callbackBM, button_callbackBR=self.button_callbackBR, mode=self.mode)
-        self.bottom_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nesw", columnspan=4)
+        self.bottom_frame.grid(row=2, column=0, padx=10, pady=0, sticky="nesw", columnspan=4)
 
         self.correct_species = None
     def button_callbackL(self):
