@@ -16,14 +16,15 @@ These instructions assume you have Python 3 installed - download it [here](https
    2. Run `python -m venv venv`
    3. Run `venv\Scripts\Activate`
 4. Run `pip install -r requirements.txt`
-5. Change the contents of location.txt to a custom name that represents the area you want snakes to be picked from (1 word only.) (For clarity purposes: I am referring to the *contents* of location.txt, e.g., what the file says when you double click it, not the name of the file.)
-6. Get the species list for that area:
+5. Change the second line of mode.txt to either "species" or "subspecies" to change the identification specificity you will be required to use. Species mode means you only get quizzed on species and subspecies mode means you get quizzed on species and subspecies if identifiable.
+6. Change the contents of location.txt to a custom name that represents the area you want snakes to be picked from (1 word only.) (For clarity purposes: I am referring to the *contents* of location.txt, e.g., what the file says when you double click it, not the name of the file.)
+7. Get the species list for that area:
    1. Go to [this link](https://www.gbif.org/occurrence/download?dataset_key=50c9509d-22c7-4a22-a47d-8c48425ef4a7&taxon_key=11592253&occurrence_status=present&gadm_gid=USA.43_1) and sign in if needed.
    2. Change the area to your desired area. (Do not change any other option - just uncheck Tennessee and click "Administrative areas", then search for the area that describes what you're looking for.)
    3. Download the species list into the same directory as app.py.
    4. Extract the csv file; delete the zip file that contained the csv file
    5. Rename the csv file to "location_species.csv"
-7. Run the app! (`python app.py`). Expect a long startup the first time you run it.
+8. Run the app! (`python app.py`). Expect a long startup the first time you run it.
 
 ### Creating a new location
 
@@ -44,7 +45,7 @@ To delete a location, simply delete `location_[word-used-in-location.txt].json` 
 ## Setup from EXE (Not recommended, but if you aren't experienced with command prompt, it might be a good choice)
 
 1. Download the zipped exe from the most recent release
-2. Follow steps 5 and 6 of setting up from source (instead of "the same directory as app.py", put it in the same directory as app.exe).
+2. Follow steps 4, 5, and 6 of setting up from source (instead of "the same directory as app.py", put it in the same directory as app.exe).
 3. Run app.exe. Expect to wait for a long period of time before a window appears. This should only happen the first time you run the app (and any time you run the app after making a new location).
 
 ### Creating a new location, exe
