@@ -59,3 +59,9 @@ If I'm being completely honest, then this code probably sucks because I'm a self
 Additionally - feel free to create feature requests as issues! I'd love to make this better in ways that people actually want, so please make feature requests if you think you'd enjoy it.
 
 As to contributing - if you feel you can make this project better in any way, and you have the free time to do it, then go nuts! Pull requests welcome.
+
+## Intended Behavior: Button Disabling
+
+One intended behavior is all of the buttons except the "Next Image" button disabling after either pressing "Get Answer" or guessing the correct species.
+
+If you feel this should not be intended behavior, and that it worsens the user experience, please create an issue!
